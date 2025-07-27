@@ -1,64 +1,25 @@
-# from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-# from PySide6.QtCore import QTimer
-# from ..gui.ui_main import Ui_MainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QFileDialog
+from PySide6.QtCore import QTimer
+from ..gui.ui_main import Ui_MainWindow
 from ..io.osc_receiver import *
+from ..core.obs_bridge import OBS_Instance
 import sys
+import configparser
 
 class MainApp(QMainWindow):
-    def __init__(self, osc_in, model, sender, recorder):
+    def __init__(self, osc_in, sender, obs_instance):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.osc_in=osc_in
         self.osc_out = sender
-        self.model = model
-        self.rec = recorder
+        self.obs = obs_instance
 
-        self.ui.models.currentIndexChanged.connect(self.model_selected)     
-        self.ui.model_type_classifiers.toggled.connect(self.classifiers_checked)
-        self.ui.model_type_regressors.toggled.connect(self.regressors_checked)
-        self.ui.model_type_classifiers.setChecked(True)
-        
-        # blink widgets
-        self.input_blink_widget = BlinkWidget(self.ui.data_in_blink, role='blink')
-        self.output_blink_widget = BlinkWidget(self.ui.data_out_blink, role='blink')
-        self.model_trainingstatus = BlinkWidget(self.ui.model_trainingstatus, role='led')
-        self.model_runstatus = BlinkWidget(self.ui.model_runstatus, role='led')
-        self.rec_led = BlinkWidget(self.ui.rec_status, role='led')
-
-        self.osc_in.run_led.connect(self.model_runstatus.toggle)
-        self.osc_in.trigger_blink.connect(self.input_blink_widget.start_blinking)
-        self.osc_out.trigger_blink.connect(self.output_blink_widget.start_blinking)
-        self.model.toggle_trainingstate.connect(self.model_trainingstatus.toggle)
-        self.osc_in.rec_led.connect(self.rec_led.toggle)
-
-        # init textfields for osc connection
-        self.ui.receiver_port.setText(str(self.osc_in.port))
-        self.ui.sender_ip.setText(str(self.osc_out.ip))
-        self.ui.sender_port.setText(str(self.osc_out.port))
         # buttons
-        self.ui.train_btn.clicked.connect(self.on_train_btn)
-        self.ui.run_btn.clicked.connect(self.on_run_btn)
-        self.ui.record_btn.clicked.connect(self.on_rec_btn)
-        self.ui.connect_btn.clicked.connect(self.on_connect_osc)
+        self.ui.connect_btn.clicked.connect(self.on_connect_btn)
+        self.ui.save_btn.clicked.connect(self.on_save_btn)
+        self.ui.load_btn.clicked.connect(self.on_load_btn)
         
-    def model_selected(self,index):
-        selection = self.ui.models.currentText()
-        all_models = dict(self.model.get_classifiers()) | dict(self.model.get_regressors())
-        key = next((k for k, v in all_models.items() if v == selection), None)
-        if key: self.model.configure_model(model_type=key)
-
-    def classifiers_checked(self, checked):
-        if checked:
-            self.ui.models.clear()
-            self.ui.models.addItems(list(k for v, k in self.model.get_classifiers())) 
-    
-    def regressors_checked(self, checked):
-        if checked:
-            self.ui.models.clear()
-            self.ui.models.addItems(list(k for v, k in self.model.get_regressors())) 
-    
-    
     def closeEvent(self, event):
         # Eigene Funktion ausführen
         self.on_close()
@@ -77,62 +38,67 @@ class MainApp(QMainWindow):
 
 
 # ====== BTNS =====
-    def on_rec_btn(self):
-        recstate = not bool(self.rec.is_recording)
-        self.osc_in.recorder_handler(None, recstate)
-
-    def on_run_btn(self):
-        runstate = not bool(self.model.is_running)
-        self.osc_in.run_handler(None, runstate)
-
-    def on_train_btn(self):
+    def on_connect_btn(self):
         try:
-            self.osc_in.train_handler()
-        except ValueError as e:
-            QMessageBox.critical(self, "Fehler", str(e))
-
-    def on_connect_osc(self):
-        try:
-            if self.ui.receiver_port.text()== '' or self.ui.sender_ip.text()=='' or self.ui.sender_port.text()=='':
+            if any(field.text() == '' for field in [self.ui.receiver_port, self.ui.sender_ip, self.ui.sender_port, self.ui.obs_ip, self.ui.obs_port]):
                 raise ValueError('ein oder mehrere Felder leer')
             self.osc_in.port = int(self.ui.receiver_port.text())
             self.osc_out.port = int(self.ui.sender_port.text())
             self.osc_out.ip = self.ui.sender_ip.text()
             self.osc_out.create_sender()
-            self.osc_in.stop_osc()
+            if self.osc_in.running:
+                self.osc_in.stop_osc()
             self.osc_in.start_osc()
+            self.obs.ip = self.ui.obs_ip.text()
+            self.obs.port = int(self.ui.obs_port.text())
+            self.obs.password = self.ui.obs_pass.text()
+            self.obs.connect_to_obs()
             QMessageBox.information(self, 'Verbindung erfolgreich', f"Verbunden! Sender IP {self.osc_out.ip}, Sender Port {self.osc_out.port}")
         except Exception as e:
             QMessageBox.critical(self, "Fehler", str(e))
-class BlinkWidget(QTimer):
-    def __init__(self, widget, role):
-        super().__init__(widget)
-        # init blink widget
-        self.state = False
-        self.role = role
-        self.blink_widget = widget
-        self.default_stylesheet = self.blink_widget.styleSheet()
-        self.blink_duration_timer = QTimer(self)
-        self.blink_duration_timer.setSingleShot(True)
-        self.blink_duration_timer.timeout.connect(self.stop_blinking)
-    
-    # === BLINK WIDGET ===
-    def start_blinking(self):
-        self.state = True
-        self.update()
-        
-    def stop_blinking(self):
-        self.state=False
-        self.update()
-        
-    def toggle(self, toggle):
-        self.state = toggle
-        self.update()
 
-    def update(self):
-        if self.state:
-            self.blink_widget.setStyleSheet(self.default_stylesheet + "background-color: rgba(151, 243, 132, 1);")
-            if self.role=='blink':
-                self.blink_duration_timer.start(300)  # 3mm ms lang leuchten
-        else:
-            self.blink_widget.setStyleSheet(self.default_stylesheet)  # zurücksetzen
+    def on_save_btn(self):
+        filename, _ = QFileDialog.getSaveFileName(
+            self,
+            "Konfigurationsdatei speichern",
+            "",
+            "Konfigurationsdateien (*.ini);;Alle Dateien (*)"
+        )
+        if filename:
+            if not filename.endswith(".ini"):
+                filename += ".ini"
+            # print(f"Ausgewählte Datei zum Speichern: {filename}")
+            config = configparser.ConfigParser()
+            config['Settings'] = {
+                'osc_in_port': self.ui.receiver_port.text(),
+                'osc_out_port': self.ui.sender_port.text(),
+                'osc_out_ip': self.ui.sender_ip.text(),
+                'obs_ip': self.ui.obs_ip.text(),
+                'obs_port': self.ui.obs_port.text(),
+                'obs_pass': self.ui.obs_pass.text(),
+            }
+
+            # Speichern
+            with open(filename, 'w') as configfile:
+                config.write(configfile)
+
+
+    def on_load_btn(self):
+            filename, _ = QFileDialog.getOpenFileName(
+                self,
+                "Konfigurationsdatei laden",
+                "",
+                "Konfigurationsdateien (*.json *.ini *.yaml *.yml);;Alle Dateien (*)"
+            )
+            if filename:
+                print(f"Ausgewählte Datei zum Laden: {filename}")
+
+                # Laden
+                config = configparser.ConfigParser()
+                config.read(filename)
+                self.ui.receiver_port.setText(config['Settings']['osc_in_port'])
+                self.ui.sender_ip.setText(config['Settings']['osc_out_ip'])
+                self.ui.sender_port.setText(config['Settings']['osc_out_port'])
+                self.ui.obs_ip.setText(config['Settings']['obs_ip'])
+                self.ui.obs_pass.setText(config['Settings']['obs_pass'])
+                self.ui.obs_port.setText(config['Settings']['obs_port'])

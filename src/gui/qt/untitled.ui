@@ -6,83 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>368</height>
+    <width>310</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>OBS OSC Bridge</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>160</y>
-      <width>181</width>
-      <height>89</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Wähle Art des Modelles</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QRadioButton" name="model_type_classifiers">
-       <property name="text">
-        <string>Klassifikatoren</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="model_type_regressors">
-       <property name="cursor">
-        <cursorShape>ArrowCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>Regressoren</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QComboBox" name="models">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>250</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="data_in_blink">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>20</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 97, 81);
-border-color: rgb(119, 118, 123);
-border-radius: 10px;
-border: 2px solid;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
+      <x>30</x>
+      <y>30</y>
       <width>58</width>
       <height>21</height>
      </rect>
@@ -94,8 +30,8 @@ border: 2px solid;</string>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>50</y>
+      <x>30</x>
+      <y>60</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -104,163 +40,24 @@ border: 2px solid;</string>
      <string>Osc Output</string>
     </property>
    </widget>
-   <widget class="QLabel" name="data_out_blink">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>50</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 97, 81);
-border-color: rgb(119, 118, 123);
-border-radius: 10px;
-border: 2px solid;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="train_btn">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>210</y>
-      <width>121</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Modell trainieren</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="model_trainingstatus">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>220</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 97, 81);
-border-color: rgb(119, 118, 123);
-border-radius: 10px;
-border: 2px solid;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="record_btn">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>160</y>
-      <width>121</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Daten aufnehmen</string>
-    </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="rec_status">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>170</y>
-      <width>20</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 97, 81);
-border-color: rgb(119, 118, 123);
-border-radius: 10px;
-border: 2px solid;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="model_runstatus">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>270</y>
-      <width>20</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LayoutDirection::LeftToRight</enum>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(246, 97, 81);
-border-color: rgb(119, 118, 123);
-border-radius: 10px;
-border: 2px solid;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="run_btn">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>260</y>
-      <width>120</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LayoutDirection::LeftToRight</enum>
-    </property>
-    <property name="text">
-     <string>Ausführen</string>
-    </property>
-    <property name="checkable">
-     <bool>false</bool>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="sender_ip">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>50</y>
+      <x>100</x>
+      <y>60</y>
       <width>113</width>
       <height>22</height>
      </rect>
     </property>
     <property name="placeholderText">
-     <string>Ip Adresse</string>
+     <string>Ip Address</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="sender_port">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>50</y>
+      <x>220</x>
+      <y>60</y>
       <width>51</width>
       <height>22</height>
      </rect>
@@ -272,8 +69,8 @@ border: 2px solid;</string>
    <widget class="QLineEdit" name="receiver_port">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>20</y>
+      <x>100</x>
+      <y>30</y>
       <width>171</width>
       <height>22</height>
      </rect>
@@ -282,17 +79,98 @@ border: 2px solid;</string>
      <string>Port</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>120</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>OBS Websocket</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="obs_ip">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>140</y>
+      <width>161</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>Ip Adresse</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="obs_port">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>140</y>
+      <width>51</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>Port</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="obs_pass">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>170</y>
+      <width>221</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::EchoMode::Password</enum>
+    </property>
+    <property name="placeholderText">
+     <string>Password</string>
+    </property>
+   </widget>
    <widget class="QPushButton" name="connect_btn">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>80</y>
-      <width>261</width>
+      <x>40</x>
+      <y>200</y>
+      <width>221</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Verbinden</string>
+     <string>Connect</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="save_btn">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>260</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save settings</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="load_btn">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>260</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load settings</string>
     </property>
    </widget>
   </widget>
@@ -301,13 +179,24 @@ border: 2px solid;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>555</width>
+     <width>310</width>
      <height>20</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>receiver_port</tabstop>
+  <tabstop>sender_ip</tabstop>
+  <tabstop>sender_port</tabstop>
+  <tabstop>obs_ip</tabstop>
+  <tabstop>obs_port</tabstop>
+  <tabstop>obs_pass</tabstop>
+  <tabstop>connect_btn</tabstop>
+  <tabstop>save_btn</tabstop>
+  <tabstop>load_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

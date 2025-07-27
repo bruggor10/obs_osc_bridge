@@ -2,12 +2,12 @@ import socket
 import obsws_python as obs
 
 class OBS_Instance:
-    def __init__(self,ip,port,password):
+    def __init__(self,ip,port,password, sender):
         self.ip = ip
         self.port = port
         self.password = password
-
-        self.connect_to_obs()
+        self.sender = sender
+        # self.connect_to_obs()
 
 
 
@@ -55,8 +55,7 @@ class OBS_Instance:
     @error_handler
     def switch_programscene(self, scene):
         self.ws.set_current_program_scene(scene)
-
-
+        
     @error_handler
     def switch_previewscene(self, scene):
         self.ws.set_current_preview_scene(scene)
@@ -81,12 +80,11 @@ class OBS_Instance:
     def set_transitionduration(self, duration):
         self.ws.set_current_scene_transition_duration(duration)
 
-
-    # elif msg == "get_scene_list":
-    #     scenelist = ws.get_scene_list()
-    #     sock_out.sendto("Available Scenes:".encode(), PD_SEND_ADDR)
-    #     for scene in scenelist.scenes:
-    #         sock_out.sendto(scene['sceneName'].encode(), PD_SEND_ADDR)
+    @error_handler
+    def get_scene_list(self, *_args, **_kwargs):
+        scenelist = self.ws.get_scene_list()
+        for scene in scenelist.scenes:
+            self.sender.send_message("/obs_osc_bridge/available_scenes", scene['sceneName'])
 
 
 

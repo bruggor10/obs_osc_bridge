@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledRpndme.ui'
+## Form generated from reading UI file 'untitledAVXbZL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.9.0
 ##
@@ -15,116 +15,70 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QGroupBox, QLabel,
-    QLineEdit, QMainWindow, QMenuBar, QPushButton,
-    QRadioButton, QSizePolicy, QStatusBar, QVBoxLayout,
+from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
     QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(555, 368)
+        MainWindow.resize(310, 330)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.groupBox = QGroupBox(self.centralwidget)
-        self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setGeometry(QRect(10, 160, 181, 89))
-        self.verticalLayout = QVBoxLayout(self.groupBox)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.model_type_classifiers = QRadioButton(self.groupBox)
-        self.model_type_classifiers.setObjectName(u"model_type_classifiers")
-
-        self.verticalLayout.addWidget(self.model_type_classifiers)
-
-        self.model_type_regressors = QRadioButton(self.groupBox)
-        self.model_type_regressors.setObjectName(u"model_type_regressors")
-        self.model_type_regressors.setCursor(QCursor(Qt.CursorShape.ArrowCursor))
-
-        self.verticalLayout.addWidget(self.model_type_regressors)
-
-        self.models = QComboBox(self.centralwidget)
-        self.models.setObjectName(u"models")
-        self.models.setGeometry(QRect(10, 250, 181, 31))
-        self.data_in_blink = QLabel(self.centralwidget)
-        self.data_in_blink.setObjectName(u"data_in_blink")
-        self.data_in_blink.setGeometry(QRect(270, 20, 21, 21))
-        self.data_in_blink.setAutoFillBackground(False)
-        self.data_in_blink.setStyleSheet(u"background-color: rgb(246, 97, 81);\n"
-"border-color: rgb(119, 118, 123);\n"
-"border-radius: 10px;\n"
-"border: 2px solid;")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
-        self.label.setGeometry(QRect(20, 20, 58, 21))
+        self.label.setGeometry(QRect(30, 30, 58, 21))
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(20, 50, 71, 21))
-        self.data_out_blink = QLabel(self.centralwidget)
-        self.data_out_blink.setObjectName(u"data_out_blink")
-        self.data_out_blink.setGeometry(QRect(270, 50, 21, 21))
-        self.data_out_blink.setAutoFillBackground(False)
-        self.data_out_blink.setStyleSheet(u"background-color: rgb(246, 97, 81);\n"
-"border-color: rgb(119, 118, 123);\n"
-"border-radius: 10px;\n"
-"border: 2px solid;")
-        self.train_btn = QPushButton(self.centralwidget)
-        self.train_btn.setObjectName(u"train_btn")
-        self.train_btn.setGeometry(QRect(290, 210, 121, 41))
-        self.model_trainingstatus = QLabel(self.centralwidget)
-        self.model_trainingstatus.setObjectName(u"model_trainingstatus")
-        self.model_trainingstatus.setGeometry(QRect(420, 220, 21, 21))
-        self.model_trainingstatus.setAutoFillBackground(False)
-        self.model_trainingstatus.setStyleSheet(u"background-color: rgb(246, 97, 81);\n"
-"border-color: rgb(119, 118, 123);\n"
-"border-radius: 10px;\n"
-"border: 2px solid;")
-        self.record_btn = QPushButton(self.centralwidget)
-        self.record_btn.setObjectName(u"record_btn")
-        self.record_btn.setGeometry(QRect(290, 160, 121, 41))
-        self.record_btn.setCheckable(False)
-        self.rec_status = QLabel(self.centralwidget)
-        self.rec_status.setObjectName(u"rec_status")
-        self.rec_status.setGeometry(QRect(420, 170, 20, 21))
-        self.rec_status.setAutoFillBackground(False)
-        self.rec_status.setStyleSheet(u"background-color: rgb(246, 97, 81);\n"
-"border-color: rgb(119, 118, 123);\n"
-"border-radius: 10px;\n"
-"border: 2px solid;")
-        self.model_runstatus = QLabel(self.centralwidget)
-        self.model_runstatus.setObjectName(u"model_runstatus")
-        self.model_runstatus.setGeometry(QRect(420, 270, 20, 21))
-        self.model_runstatus.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.model_runstatus.setAutoFillBackground(False)
-        self.model_runstatus.setStyleSheet(u"background-color: rgb(246, 97, 81);\n"
-"border-color: rgb(119, 118, 123);\n"
-"border-radius: 10px;\n"
-"border: 2px solid;")
-        self.run_btn = QPushButton(self.centralwidget)
-        self.run_btn.setObjectName(u"run_btn")
-        self.run_btn.setGeometry(QRect(290, 260, 120, 41))
-        self.run_btn.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.run_btn.setCheckable(False)
+        self.label_2.setGeometry(QRect(30, 60, 71, 21))
         self.sender_ip = QLineEdit(self.centralwidget)
         self.sender_ip.setObjectName(u"sender_ip")
-        self.sender_ip.setGeometry(QRect(90, 50, 113, 22))
+        self.sender_ip.setGeometry(QRect(100, 60, 113, 22))
         self.sender_port = QLineEdit(self.centralwidget)
         self.sender_port.setObjectName(u"sender_port")
-        self.sender_port.setGeometry(QRect(210, 50, 51, 22))
+        self.sender_port.setGeometry(QRect(220, 60, 51, 22))
         self.receiver_port = QLineEdit(self.centralwidget)
         self.receiver_port.setObjectName(u"receiver_port")
-        self.receiver_port.setGeometry(QRect(90, 20, 171, 22))
+        self.receiver_port.setGeometry(QRect(100, 30, 171, 22))
+        self.label_3 = QLabel(self.centralwidget)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setGeometry(QRect(40, 120, 101, 16))
+        self.obs_ip = QLineEdit(self.centralwidget)
+        self.obs_ip.setObjectName(u"obs_ip")
+        self.obs_ip.setGeometry(QRect(40, 140, 161, 22))
+        self.obs_port = QLineEdit(self.centralwidget)
+        self.obs_port.setObjectName(u"obs_port")
+        self.obs_port.setGeometry(QRect(210, 140, 51, 22))
+        self.obs_pass = QLineEdit(self.centralwidget)
+        self.obs_pass.setObjectName(u"obs_pass")
+        self.obs_pass.setGeometry(QRect(40, 170, 221, 22))
+        self.obs_pass.setEchoMode(QLineEdit.EchoMode.Password)
         self.connect_btn = QPushButton(self.centralwidget)
         self.connect_btn.setObjectName(u"connect_btn")
-        self.connect_btn.setGeometry(QRect(20, 80, 261, 23))
+        self.connect_btn.setGeometry(QRect(40, 200, 221, 23))
+        self.save_btn = QPushButton(self.centralwidget)
+        self.save_btn.setObjectName(u"save_btn")
+        self.save_btn.setGeometry(QRect(40, 260, 101, 23))
+        self.load_btn = QPushButton(self.centralwidget)
+        self.load_btn.setObjectName(u"load_btn")
+        self.load_btn.setGeometry(QRect(160, 260, 101, 23))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 555, 20))
+        self.menubar.setGeometry(QRect(0, 0, 310, 20))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        QWidget.setTabOrder(self.receiver_port, self.sender_ip)
+        QWidget.setTabOrder(self.sender_ip, self.sender_port)
+        QWidget.setTabOrder(self.sender_port, self.obs_ip)
+        QWidget.setTabOrder(self.obs_ip, self.obs_port)
+        QWidget.setTabOrder(self.obs_port, self.obs_pass)
+        QWidget.setTabOrder(self.obs_pass, self.connect_btn)
+        QWidget.setTabOrder(self.connect_btn, self.save_btn)
+        QWidget.setTabOrder(self.save_btn, self.load_btn)
 
         self.retranslateUi(MainWindow)
 
@@ -132,23 +86,18 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"W\u00e4hle Art des Modelles", None))
-        self.model_type_classifiers.setText(QCoreApplication.translate("MainWindow", u"Klassifikatoren", None))
-        self.model_type_regressors.setText(QCoreApplication.translate("MainWindow", u"Regressoren", None))
-        self.data_in_blink.setText("")
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"OBS OSC Bridge", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Osc Input", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Osc Output", None))
-        self.data_out_blink.setText("")
-        self.train_btn.setText(QCoreApplication.translate("MainWindow", u"Modell trainieren", None))
-        self.model_trainingstatus.setText("")
-        self.record_btn.setText(QCoreApplication.translate("MainWindow", u"Daten aufnehmen", None))
-        self.rec_status.setText("")
-        self.model_runstatus.setText("")
-        self.run_btn.setText(QCoreApplication.translate("MainWindow", u"Ausf\u00fchren", None))
-        self.sender_ip.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Ip Adresse", None))
+        self.sender_ip.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Ip Address", None))
         self.sender_port.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Port", None))
         self.receiver_port.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Port", None))
-        self.connect_btn.setText(QCoreApplication.translate("MainWindow", u"Verbinden", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"OBS Websocket", None))
+        self.obs_ip.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Ip Adresse", None))
+        self.obs_port.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Port", None))
+        self.obs_pass.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Password", None))
+        self.connect_btn.setText(QCoreApplication.translate("MainWindow", u"Connect", None))
+        self.save_btn.setText(QCoreApplication.translate("MainWindow", u"Save settings", None))
+        self.load_btn.setText(QCoreApplication.translate("MainWindow", u"Load settings", None))
     # retranslateUi
 

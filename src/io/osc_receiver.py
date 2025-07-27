@@ -18,8 +18,6 @@ class OSCReceiver:
         self.thread = None
         self.message_handler = None
 
-
-
     def add_handler(self, address, handler_func):
         """
         Fügt einen Handler für eine bestimmte OSC-Address hinzu.
@@ -58,14 +56,13 @@ class OSCHandler():
         self.ip = "0.0.0.0"
         self.port = port
         self.obs_instance = obs_instance
-
-
+        
+        self.running = False
     # ============ Handlers ==========
     def previewscene_handler(self, address, scene):
-        print(scene)
+        self.obs_instance.switch_previewscene(scene)
        
     def programscene_handler(self, address, scene):
-        print(f"Programscene: {scene}")
         self.obs_instance.switch_programscene(scene)
 
     def stream_handler(self, address, streamstate):
@@ -80,6 +77,12 @@ class OSCHandler():
         else:
             self.obs_instance.stop_record()
 
+    def transition_duration_handler(self, address, duration):
+        self.obs_instance.set_transitionduration(duration)
+
+    def get_scenelist_handler(self, address, *_args, **_kwargs):
+        self.obs_instance.get_scene_list()
+        
     def start_osc(self):
         ## handle OSC Inputs
         self.receiver = OSCReceiver(ip=self.ip, port=self.port)
@@ -87,9 +90,14 @@ class OSCHandler():
         self.receiver.add_handler("/programscene", self.programscene_handler)
         self.receiver.add_handler("/stream", self.stream_handler)
         self.receiver.add_handler("/recording", self.recording_handler)
+        self.receiver.add_handler("/transition_duration", self.transition_duration_handler)
+        self.receiver.add_handler("/get_scene_list", self.get_scenelist_handler)
         self.receiver.start()
+        self.running = True
+
 
     def stop_osc(self):
         ## stop osc receiving thread
-        self.receiver.stop()
-        
+        if self.running:
+            self.receiver.stop()
+            self.running = False
