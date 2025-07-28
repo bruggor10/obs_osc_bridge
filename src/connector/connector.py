@@ -7,41 +7,31 @@ import sys
 import configparser
 
 class MainApp(QMainWindow):
-    def __init__(self, osc_in, sender, obs_instance):
+    def __init__(self, sender, osc_in, obs_instance):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.obs = obs_instance
         self.osc_in=osc_in
         self.osc_out = sender
-        self.obs = obs_instance
-
+        
         # buttons
         self.ui.connect_btn.clicked.connect(self.on_connect_btn)
         self.ui.save_btn.clicked.connect(self.on_save_btn)
         self.ui.load_btn.clicked.connect(self.on_load_btn)
-        
-    def closeEvent(self, event):
-        # Eigene Funktion ausführen
-        self.on_close()
 
-        # Fenster trotzdem schließen lassen
+    def closeEvent(self, event):
+        self.on_close()
         event.accept()
 
-        # Wenn du das Schließen verhindern willst, verwende: event.ignore()
-
     def on_close(self):
-        # Beispielhafte Funktion beim Schließen
-        print("Fenster wird geschlossen. Aufräumen oder Speichern ...")
+        print("Closing Window")
         self.osc_in.stop_osc()
-        # Optional z.B. ein Dialog:
-        # QMessageBox.information(self, "Bye!", "Das Fenster wird jetzt geschlossen.")
-
-
 # ====== BTNS =====
     def on_connect_btn(self):
         try:
             if any(field.text() == '' for field in [self.ui.receiver_port, self.ui.sender_ip, self.ui.sender_port, self.ui.obs_ip, self.ui.obs_port]):
-                raise ValueError('ein oder mehrere Felder leer')
+                raise ValueError('one or more fields empty')
             self.osc_in.port = int(self.ui.receiver_port.text())
             self.osc_out.port = int(self.ui.sender_port.text())
             self.osc_out.ip = self.ui.sender_ip.text()
@@ -53,9 +43,10 @@ class MainApp(QMainWindow):
             self.obs.port = int(self.ui.obs_port.text())
             self.obs.password = self.ui.obs_pass.text()
             self.obs.connect_to_obs()
-            QMessageBox.information(self, 'Verbindung erfolgreich', f"Verbunden! Sender IP {self.osc_out.ip}, Sender Port {self.osc_out.port}")
+            if self.obs:
+                QMessageBox.information(self, 'Connected successfully!', f"Connected! Sender IP {self.osc_out.ip}, Sender Port {self.osc_out.port}")
         except Exception as e:
-            QMessageBox.critical(self, "Fehler", str(e))
+            QMessageBox.critical(self, "Error", str(e))
 
     def on_save_btn(self):
         filename, _ = QFileDialog.getSaveFileName(
@@ -94,11 +85,14 @@ class MainApp(QMainWindow):
                 print(f"Ausgewählte Datei zum Laden: {filename}")
 
                 # Laden
-                config = configparser.ConfigParser()
-                config.read(filename)
-                self.ui.receiver_port.setText(config['Settings']['osc_in_port'])
-                self.ui.sender_ip.setText(config['Settings']['osc_out_ip'])
-                self.ui.sender_port.setText(config['Settings']['osc_out_port'])
-                self.ui.obs_ip.setText(config['Settings']['obs_ip'])
-                self.ui.obs_pass.setText(config['Settings']['obs_pass'])
-                self.ui.obs_port.setText(config['Settings']['obs_port'])
+                try: 
+                    config = configparser.ConfigParser()
+                    config.read(filename)
+                    self.ui.receiver_port.setText(config['Settings']['osc_in_port'])
+                    self.ui.sender_ip.setText(config['Settings']['osc_out_ip'])
+                    self.ui.sender_port.setText(config['Settings']['osc_out_port'])
+                    self.ui.obs_ip.setText(config['Settings']['obs_ip'])
+                    self.ui.obs_pass.setText(config['Settings']['obs_pass'])
+                    self.ui.obs_port.setText(config['Settings']['obs_port'])
+                except Exception as e:
+                    QMessageBox.critical(self, "Error", "Error reading file!")

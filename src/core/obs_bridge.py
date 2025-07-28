@@ -1,5 +1,18 @@
 import socket
 import obsws_python as obs
+from PySide6.QtWidgets import QMessageBox
+
+
+def error_handler(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            msg = str(e)
+            self=args[0]
+            self.sender.send_message("/obs_bridge_error", msg)
+            return None
+    return wrapper
 
 class OBS_Instance:
     def __init__(self,ip,port,password, sender):
@@ -21,6 +34,8 @@ class OBS_Instance:
             if _req_scene in scene["sceneName"]:
                 return scene["sceneUuid"]
 
+
+
     # OBS-WebSocket Verbindung
     def connect_to_obs(self):
         try:
@@ -30,27 +45,16 @@ class OBS_Instance:
                 password=self.password,
                 timeout=3
             )
-            print("Verbindung zu OBS erfolgreich hergestellt.")
+            print("Connection to OBS successful.")
 
         except ConnectionRefusedError:
-            print("Fehler: Keine Verbindung zu OBS möglich. Ist OBS gestartet und WebSocket aktiviert?")
-
+            raise ConnectionRefusedError("Error: Unable to connect to OBS. Is OBS running and is WebSocket enabled?")
         except TimeoutError:
-            print("Fehler: Zeitüberschreitung beim Verbindungsaufbau zu OBS.")
-
+            raise TimeoutError("Fehler: Connection timeout")
         except Exception as e:
-            print(f"Ein unerwarteter Fehler ist aufgetreten: {e}")
+            raise Exception("An unexpected error occurred: {e}")
 
 
-    def error_handler(func):
-        def wrapper(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:
-                err = f"error:{type(e).__name__}:{str(e)}"
-                print(f"❌ {err}")
-                return None
-        return wrapper
 
     @error_handler
     def switch_programscene(self, scene):
@@ -86,37 +90,12 @@ class OBS_Instance:
         for scene in scenelist.scenes:
             self.sender.send_message("/obs_osc_bridge/available_scenes", scene['sceneName'])
 
+    @error_handler
+    def get_scene_item_list(self, scene):
+        for item in self.ws.get_scene_item_list(scene).scene_items:
+            self.sender.send_message("/obs_osc_bridge/available_scene_items", item['sceneItemId'], item['sourceName'])
 
 
-
-
-
-    # elif msg.startswith("get_scene_item_list:"):
-    #     requested_scene = msg.split(":")[1]
-    #     sock_out.sendto(f"Available items in {requested_scene}:".encode(), PD_SEND_ADDR)
-    #     for item in ws.get_scene_item_list(requested_scene).scene_items:
-    #         sock_out.sendto(item["sourceName"].encode(), PD_SEND_ADDR)
-
-    # elif msg.startswith("enable_scene_item:"):
-    #     requested_scene = msg.split(":")[1]
-    #     requested_item = msg.split(":")[2]
-    #     item_id =get_scene_item_id(requested_scene, requested_item)
-    #     ws.set_scene_item_enabled(requested_scene, item_id, True)
-    #     sock_out.sendto(f"ok:enabled {requested_item} in scene {requested_scene}".encode(), PD_SEND_ADDR)
-
-    # elif msg.startswith("disable_scene_item:"):
-    #     requested_scene = msg.split(":")[1]
-    #     requested_item = msg.split(":")[2]
-    #     item_id =get_scene_item_id(requested_scene, requested_item)
-    #     ws.set_scene_item_enabled(requested_scene, item_id, False)
-    #     sock_out.sendto(f"ok:disabled {requested_item} in scene {requested_scene}".encode(), PD_SEND_ADDR)
-
-
-
-    # else:
-    #     sock_out.sendto(f"error:unknown_command:{msg}".encode(), PD_SEND_ADDR)
-
-
-
-
-
+    @error_handler
+    def enable_scene_item(self, scene, item, state):
+        self.ws.set_scene_item_enabled(scene, item, state)

@@ -1,7 +1,5 @@
 from pythonosc import dispatcher
 from pythonosc import osc_server
-# from PySide6.QtCore import QObject, Signal
-# from PySide6.QtWidgets import QMessageBox
 import threading
 
 class OSCReceiver:
@@ -31,7 +29,7 @@ class OSCReceiver:
         Startet den OSC-Server in einem separaten Thread.
         """
         self.server = osc_server.ThreadingOSCUDPServer((self.ip, self.port), self.dispatcher)
-        print(f"OSC Server läuft auf {self.ip}:{self.port}")
+        print(f"OSC Server running. {self.ip}:{self.port}")
         self.thread = threading.Thread(target=self.server.serve_forever)
         self.thread.start()
 
@@ -42,26 +40,24 @@ class OSCReceiver:
         if self.server:
             self.server.shutdown()
             self.thread.join()
-            print("OSC Server gestoppt.")
+            print("OSC Server stopped.")
 
     
                 
 
 
-# class OSCHandler(QObject):
 class OSCHandler():
-    # trigger_blink = Signal()
     def __init__(self, obs_instance, port):
-        # super().__init__()
         self.ip = "0.0.0.0"
         self.port = port
         self.obs_instance = obs_instance
-        
         self.running = False
     # ============ Handlers ==========
+
+
     def previewscene_handler(self, address, scene):
         self.obs_instance.switch_previewscene(scene)
-       
+
     def programscene_handler(self, address, scene):
         self.obs_instance.switch_programscene(scene)
 
@@ -83,6 +79,12 @@ class OSCHandler():
     def get_scenelist_handler(self, address, *_args, **_kwargs):
         self.obs_instance.get_scene_list()
         
+    def get_sceneitemlist_handler(self, address, scene):
+        self.obs_instance.get_scene_item_list(scene)
+
+    def enable_scene_item_handler(self, address, scene, item, state):
+        self.obs_instance.enable_scene_item(scene, item, bool(state))
+
     def start_osc(self):
         ## handle OSC Inputs
         self.receiver = OSCReceiver(ip=self.ip, port=self.port)
@@ -92,6 +94,9 @@ class OSCHandler():
         self.receiver.add_handler("/recording", self.recording_handler)
         self.receiver.add_handler("/transition_duration", self.transition_duration_handler)
         self.receiver.add_handler("/get_scene_list", self.get_scenelist_handler)
+        self.receiver.add_handler("/get_scene_item_list", self.get_sceneitemlist_handler)
+        self.receiver.add_handler("/enable_scene_item", self.enable_scene_item_handler)
+
         self.receiver.start()
         self.running = True
 
