@@ -1,6 +1,5 @@
 import socket
 import obsws_python as obs
-from PySide6.QtWidgets import QMessageBox
 
 
 def error_handler(func):
@@ -20,9 +19,6 @@ class OBS_Instance:
         self.port = port
         self.password = password
         self.sender = sender
-        # self.connect_to_obs()
-
-
 
     def get_scene_item_id(_req_scene, _req_item):
         for item in ws.get_scene_item_list(_req_scene).scene_items:
