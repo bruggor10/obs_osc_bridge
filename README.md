@@ -30,6 +30,8 @@ Connection to OBS via Websockets, and generic OpenSoundControl (OSC) for control
         - example: "/enable_scene_item my_scene 3 1". This will enable item number 3 in scene "my_scene". You can get a numbered list of scene items with "/get_scene_item_list", see above.
 
 # How to run the program
+## Prebuilt package (Linux)
+Go to the release section and download the executable. Make it executable
 ### Create a virtual environment and install the requirements:
 You need python3 and python3-venv for this.
 then, git clone the repo, create a virtual environment and source into it with the following commands:
@@ -42,9 +44,11 @@ pip install -r requirements.txt
 ```
 
 ### run the program:
+#### from dev environment
 Source into the virtual environment and run it: (make sure the path is correct)
 ```
 source .env/bin/activate
 python3 obs_osc_bridge.py
 ```
-
+#### build instructions
+If you want to create an executable, follow the steps above and source into the development environment. Build the program with `pyinstaller --onefile obs_osc_bridge.py`
